@@ -1,3 +1,4 @@
+
 <div class='row'>
   <div class='col-md-4'>
 
@@ -7,11 +8,11 @@
       </div>
 
       <div class='card-body'
-           *ngIf="products.length">
+           *ngIf="products$ | async as products">
         <div class='list-group'>
           <button type='button'
                   class='list-group-item'
-                  *ngFor='let product of products'
+                  *ngFor="let product of products; trackBy: trackByProductId"
                   [ngClass]="{'active': product.id === selectedProductId}"
                   (click)='onSelected(product.id)'>
             {{ product.productName }}
