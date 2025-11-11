@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, EMPTY, Observable, tap, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { Product } from './product';
 import { HttpErrorService } from '../utilities/http-error.service';
 
@@ -17,7 +17,7 @@ export class ProductService {
       .pipe(
         tap(() => console.log('In http.get pipeline')),
         catchError((err) => this.handleError(err)),
-        );
+      );
   }
 
   getProduct(id: number): Observable<Product> {
