@@ -4,7 +4,7 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Product } from '../product';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
 import { ProductService } from '../product.service';
-import { ReplaySubject, takeUntil, tap } from 'rxjs';
+import { catchError, EMPTY, ReplaySubject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'pm-product-list',
@@ -24,7 +24,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.productsService.getProducts()
       .pipe(
         tap(products => this.products = products),
-        takeUntil(this.destroy$))
+        takeUntil(this.destroy$),
+        catchError(err => {
+          this.errorMessage = err;
+          return EMPTY;
+        }))
       .subscribe();
   }
 

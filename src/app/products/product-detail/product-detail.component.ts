@@ -3,7 +3,7 @@ import { Component, inject, Input, OnChanges, OnDestroy, SimpleChanges } from '@
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
-import { ReplaySubject, takeUntil, tap } from 'rxjs';
+import { catchError, EMPTY, ReplaySubject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'pm-product-detail',
@@ -25,7 +25,11 @@ export class ProductDetailComponent implements OnChanges, OnDestroy {
       this.productsService.getProduct(this.productId)
         .pipe(
           tap(products => this.product = products),
-          takeUntil(this.destroy$))
+          takeUntil(this.destroy$),
+          catchError(err => {
+            this.errorMessage = err;
+            return EMPTY;
+          }))
         .subscribe();
     }
   }
