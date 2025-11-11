@@ -15,7 +15,7 @@ export class ProductListComponent {
   productsService = inject(ProductService);
   pageTitle = 'Products';
   errorMessage = '';
-  selectedProductId: number = 0;
+  readonly selectedProductId$ = this.productsService.productSelected$;
 
   readonly products$ = this.productsService.products$
     .pipe(
@@ -29,7 +29,6 @@ export class ProductListComponent {
   }
 
   onSelected(productId: number): void {
-    this.selectedProductId = productId;
-    console.log(this.selectedProductId);
+    this.productsService.productSelected(productId);
   }
 }
