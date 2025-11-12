@@ -1,6 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, filter, map, Observable, of, shareReplay, switchMap, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { catchError, filter, map, Observable, of, shareReplay, switchMap } from 'rxjs';
 import { Product, Result } from './product';
 import { HttpErrorService } from '../utilities/http-error.service';
 import { ReviewService } from '../reviews/review.service';
@@ -22,10 +22,10 @@ export class ProductService {
       shareReplay(1),
       catchError((err) => of({
         data: [],
-        error: this.httpErrorService.formatError(err)
+        error: this.httpErrorService.formatError(err),
       } as Result<Product[]>)));
   private productsResult = toSignal(this.productResults$,
-    { initialValue: ({data: [] } as Result<Product[]>)})
+    {initialValue: ({data: []} as Result<Product[]>)})
   products = computed(() => this.productsResult().data);
   productsError = computed(() => this.productsResult().error);
 
@@ -39,11 +39,11 @@ export class ProductService {
             switchMap(product => this.getProductWithReviews(product)),
             catchError(err => of({
               data: undefined,
-              error: this.httpErrorService.formatError(err)
+              error: this.httpErrorService.formatError(err),
             } as Result<Product>)),
           );
       }),
-      map(p => ({data: p} as Result<Product>))
+      map(p => ({data: p} as Result<Product>)),
     );
 
   private productResult = toSignal(this.productResult$);
