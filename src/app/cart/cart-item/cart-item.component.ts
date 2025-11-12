@@ -18,7 +18,7 @@ export class CartItemComponent {
 
   item = signal<CartItem>(undefined!)
   cartService = inject(CartService)
-  // qtyArr = [...Array(8).keys()].map(x => x + 1);
+
   qtyArr = computed(() => [...Array(this.item().product.quantityInStock).keys()].map(x => x + 1))
 
   exPrice = computed(() => this.item().quantity * this.item().product.price)
