@@ -50,31 +50,6 @@ export class ProductService {
   product = computed(() => this.productResult()?.data);
   productError = computed(() => this.productResult()?.error);
 
-  productLoaded = computed(() => {
-    let id = this.selectedProductId();
-    let products = this.products();
-
-    if (id && (products && products.length > 0)) {
-      return products.find(p => p.id === id);
-    }
-    return undefined;
-  })
-
-  // private product$ = combineLatest([
-  //   this.productSelected$,
-  //   this.products$,
-  // ]).pipe(
-  //   map(([selectedProductId, products]) =>
-  //     products.find(product => product.id === selectedProductId)),
-  //   filter(Boolean),
-  //   switchMap(product => this.getProductWithReviews(product)),
-  //   catchError((err) => this.handleError(err)),
-  // )
-
-
-
-  // product = toSignal(this.product$, {initialValue: undefined})
-
   productSelected(selectedProductId: number) {
     this.selectedProductId.set(selectedProductId);
   }
@@ -87,11 +62,6 @@ export class ProductService {
         )
     }
     return of(product);
-  }
-
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    const formatedMessage = this.httpErrorService.formatError(error);
-    return throwError(() => formatedMessage);
   }
 
 }
