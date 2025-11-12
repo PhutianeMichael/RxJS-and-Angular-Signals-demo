@@ -1,28 +1,22 @@
 import { Component, inject } from '@angular/core';
 
-import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
 import { ProductService } from '../product.service';
-import { catchError, EMPTY } from 'rxjs';
 
 @Component({
   selector: 'pm-product-list',
   templateUrl: './product-list.component.html',
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, ProductDetailComponent, AsyncPipe],
+  imports: [NgIf, NgFor, NgClass, ProductDetailComponent],
 })
 export class ProductListComponent {
-  productsService = inject(ProductService);
   pageTitle = 'Products';
-  errorMessage = '';
-  readonly selectedProductId$ = this.productsService.productSelected$;
+  private productsService = inject(ProductService);
+  selectedProductId = this.productsService.selectedProductId;
 
-  readonly products$ = this.productsService.products$
-    .pipe(
-      catchError(err => {
-        this.errorMessage = err;
-        return EMPTY;
-      }));
+  products = this.productsService.products;
+  errorMessage = this.productsService.productsError;
 
   trackByProductId(productId: number) {
     return productId
