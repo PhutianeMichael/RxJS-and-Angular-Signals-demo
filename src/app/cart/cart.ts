@@ -4,3 +4,7 @@ export interface CartItem {
   product: Product;
   quantity: number;
 }
+export type CartOptions = {
+  persistenceType: string,
+  persistenceKey: string,
+}

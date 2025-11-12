@@ -5,6 +5,7 @@ import { AppData } from './app-data';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
+import { CART_OPTIONS_TOKEN } from './cart/cart.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,5 +15,9 @@ export const appConfig: ApplicationConfig = {
       InMemoryWebApiModule.forRoot(AppData, {delay: 1000}),
     ),
     provideRouter(routes),
+    {
+      provide: CART_OPTIONS_TOKEN,
+      useValue: {persistenceType: 'local', persistenceKey: 'cart'},
+    },
   ],
 };
